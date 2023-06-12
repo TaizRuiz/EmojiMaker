@@ -7,6 +7,7 @@ package TDASimplement;
 /**
  *
  * @author USUARIO
+ * @param <E>
  */
 public class DCLList<E> implements List<E>{
     
@@ -18,8 +19,12 @@ public class DCLList<E> implements List<E>{
 
     @Override
     public boolean addLast(E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        // hola
+        
+        return true;
     }
+    
 
     @Override
     public int size() {
