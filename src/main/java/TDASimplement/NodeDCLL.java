@@ -10,8 +10,8 @@ package TDASimplement;
  */
 class NodeDCLL<E> {
     
-    E content;
-    NodeDCLL<E> previous;
+    private E content;
+    private NodeDCLL<E> previous;
     NodeDCLL<E> next;
     
     public NodeDCLL(E content){
@@ -44,5 +44,8 @@ class NodeDCLL<E> {
         this.next = next;
     }
     
-    
+    //son iguales por el contenido
+    public boolean equals(NodeDCLL<E> nodo){
+        return this.content.equals(nodo.content);
+    }
 }
