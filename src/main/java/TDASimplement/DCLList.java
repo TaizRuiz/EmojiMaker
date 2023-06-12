@@ -9,6 +9,12 @@ package TDASimplement;
  * @author USUARIO
  */
 public class DCLList<E> implements List<E>{
+    
+    NodeDCLL<E> last;
+    
+    public DCLList(){
+        last = null;
+    }
 
     @Override
     public boolean addLast(E element) {
@@ -27,7 +33,7 @@ public class DCLList<E> implements List<E>{
 
     @Override
     public boolean remove(E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }
