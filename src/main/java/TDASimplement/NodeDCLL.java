@@ -48,4 +48,6 @@ public class NodeDCLL<E> {
     public boolean equals(NodeDCLL<E> nodo){
         return this.content.equals(nodo.content);
     }
+    
+    
 }

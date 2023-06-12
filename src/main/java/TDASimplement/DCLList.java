@@ -22,10 +22,15 @@ public class DCLList<E> implements List<E>{
     @Override
     public boolean addLast(E element) {
         NodeDCLL<E> nodo = new NodeDCLL(element);
+        
         if ( this.size() == 0){
+            nodo.setNext(nodo);
+            nodo.setPrevious(nodo);
             this.last = nodo;
+            
             return true;
-        }      
+        }     
+        
         nodo.setNext(this.last.getNext());
         this.last.setNext(nodo);
         nodo.setPrevious(this.last);
@@ -49,8 +54,11 @@ public class DCLList<E> implements List<E>{
         NodeDCLL<E> nodoViajero = last;
         contador ++;
         
+        //Cannot invoke "TDASimplement.NodeDCLL.equals(TDASimplement.NodeDCLL)" because "nodoViajero" is null
+        
+        
         //aqui va un equals en la condicion o puede ser nodoViajero != last ???
-        for(nodoViajero = nodoViajero.getNext(); !nodoViajero.equals(last); nodoViajero = nodoViajero.getNext()){
+        for(nodoViajero = nodoViajero.getNext(); !(nodoViajero.equals(last)); nodoViajero = nodoViajero.getNext()){
             contador ++;
         }
         
@@ -92,5 +100,22 @@ public class DCLList<E> implements List<E>{
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        NodeDCLL<E> nodoViajero = last;
+        String cadena = "";
+        
+        E contenido = nodoViajero.getContent();
+
+        for(nodoViajero = nodoViajero.getNext(); !nodoViajero.equals(last); nodoViajero = nodoViajero.getNext()){
+            cadena += nodoViajero.getContent() + ", ";
+        }
+        
+        cadena += contenido;
+        return cadena;
+    }
+    
+    
     
 }

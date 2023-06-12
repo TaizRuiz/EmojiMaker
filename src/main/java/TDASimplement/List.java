@@ -14,5 +14,6 @@ public interface List<E> {
     public int size();
     public E get(int i);
     public boolean remove(E element);
+    public String toString();
     
 }
