@@ -1,8 +1,8 @@
 TDASimplement\ArrayList.class
+Classes\Emoji.class
+com\mycompany\emojimaker\GalleryWindowController.class
 TDASimplement\DCLList.class
 com\mycompany\emojimaker\App.class
 com\mycompany\emojimaker\WelcomeWindowController.class
 module-info.class
 TDASimplement\List.class
-Classes\Emoji.class
-com\mycompany\emojimaker\GalleryWindowController.class

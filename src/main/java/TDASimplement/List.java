@@ -8,6 +8,11 @@ package TDASimplement;
  *
  * @author USUARIO
  */
-public interface List {
+public interface List<E> {
+    
+    public boolean addLast(E element);
+    public int size();
+    public E get(int i);
+    public boolean remove(E element);
     
 }
