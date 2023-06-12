@@ -16,12 +16,21 @@ public class DCLList<E> implements List<E>{
     public DCLList(){
         last = null;
     }
+    
+    
 
     @Override
     public boolean addLast(E element) {
-        
-        // hola
-        
+        NodeDCLL<E> nodo = new NodeDCLL(element);
+        if ( this.size() == 0){
+            this.last = nodo;
+            return true;
+        }      
+        nodo.setNext(this.last.getNext());
+        this.last.setNext(nodo);
+        nodo.setPrevious(this.last);
+        nodo.getNext().setPrevious(nodo);
+        this.last = nodo;      
         return true;
     }
     

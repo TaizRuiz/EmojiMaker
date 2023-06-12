@@ -8,7 +8,7 @@ package TDASimplement;
  *
  * @author melis
  */
-class NodeDCLL<E> {
+public class NodeDCLL<E> {
     
     private E content;
     private NodeDCLL<E> previous;
