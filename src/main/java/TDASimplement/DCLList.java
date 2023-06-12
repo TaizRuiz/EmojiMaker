@@ -10,7 +10,7 @@ package TDASimplement;
  */
 public class DCLList<E> implements List<E>{
     
-    NodeDCLL<E> last;
+    private NodeDCLL<E> last;
     
     public DCLList(){
         last = null;
@@ -33,7 +33,27 @@ public class DCLList<E> implements List<E>{
 
     @Override
     public boolean remove(E element) {
-    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //deberia existir
+        //tendriamos que ir iterando uno a uno e ir comparando
+        NodeDCLL<E> nodo = new NodeDCLL<>(element);
+        
+        NodeDCLL<E> nodoViajero = last;
+        
+        //ver el size y ahi ir iterando
+        for(int i = 0;i < size() ;i++){
+            
+            //va pasando cada elemento a ver si es igual y se remueve
+            if(nodoViajero.equals(nodo)){
+                //setea el siguiente del anterior
+                nodo.getPrevious().setNext(nodo.getNext());
+                //setea el anterior del siguiente
+                nodo.getNext().setPrevious(nodo.getPrevious());
+                return true;
+            }
+            
+            nodoViajero = nodoViajero.getNext();
+        }
+        return false;
     }
     
 }
