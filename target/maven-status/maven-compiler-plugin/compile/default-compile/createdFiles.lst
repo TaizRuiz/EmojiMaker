@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 com\mycompany\emojimaker\GalleryWindowController.class
 com\mycompany\emojimaker\EmojiLienzoController.class
+=======
+TDASimplement\ArrayList.class
+Classes\Emoji.class
+com\mycompany\emojimaker\GalleryWindowController.class
+TDASimplement\DCLList.class
+>>>>>>> f854c4f25cc17dd3167201496e3890b37e653731
 com\mycompany\emojimaker\App.class
 module-info.class
 com\mycompany\emojimaker\WelcomeWindowController.class
@@ -8,4 +15,7 @@ Classes\Proyecto.class
 TDASimplement\DCLList.class
 Classes\Usuario.class
 TDASimplement\List.class
+<<<<<<< HEAD
 Classes\Emoji.class
+=======
+>>>>>>> f854c4f25cc17dd3167201496e3890b37e653731

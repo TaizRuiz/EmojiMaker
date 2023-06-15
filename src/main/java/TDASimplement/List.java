@@ -12,8 +12,8 @@ public interface List<E> {
 
 
 
+  
     public int size();
-
     public boolean isEmpty();
 
     public void clear();
@@ -34,9 +34,7 @@ public interface List<E> {
 
     public E set(int index, E element); // setea el element en la posición index
 
-    public String toString();
-    
-   
-
-    
+    public String toString(); 
+  
+  
 }
