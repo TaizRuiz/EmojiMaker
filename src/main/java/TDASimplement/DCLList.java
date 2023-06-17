@@ -31,14 +31,11 @@ public class DCLList<E> implements List<E>{
             return true;
         }     
         
-        nodo.setNext(this.last.getPrevious());
-        this.last.getPrevious().setPrevious(nodo);
+        nodo.setNext(this.last.getNext());
+        this.last.getNext().setPrevious(nodo);
         this.last.setNext(nodo);
         nodo.setPrevious(this.last);
-        this.last=nodo;
-        
-   
-        this.last = nodo;      
+        this.last=nodo;   
         return true;
     }
     
@@ -54,14 +51,14 @@ public class DCLList<E> implements List<E>{
         }
         
         //caso general
-        NodeDCLL<E> nodoViajero = last;
-        contador ++;
+        NodeDCLL<E> nodoViajero=this.last;
+        contador++;
         
         //Cannot invoke "TDASimplement.NodeDCLL.equals(TDASimplement.NodeDCLL)" because "nodoViajero" is null
         
         
         //aqui va un equals en la condicion o puede ser nodoViajero != last ???
-        for(nodoViajero = nodoViajero.getNext(); !(nodoViajero.equals(last)); nodoViajero = nodoViajero.getNext()){
+        for(nodoViajero =nodoViajero.getNext(); !(nodoViajero.equals(last)); nodoViajero = nodoViajero.getNext()){
             contador ++;
         }
         

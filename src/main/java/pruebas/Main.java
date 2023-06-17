@@ -27,20 +27,22 @@ public class Main {
         lista.addLast("1");
         lista.addLast("2");
         lista.addLast("3");
+        lista.addLast("5");
+        lista.addLast("4");
         System.out.println(lista.size());
         
         /*
         PRUEBA DE CARGAR IMAGENES DEL DIRECTORIO 
         */
         
-        File directorio = new File("C:\\Users\\melis\\Downloads\\Proyecto_PrimeraEvaluacion_EstructurasDeDatos_PAO1_2023\\images\\mouth");
+        File directorio = new File("src\\main\\java\\imagenes\\eyes");
         ArrayList<File> imagenes = cargar(directorio);
         System.out.println("hol");
         //esas files pasarla a image
         
         for(File file: imagenes){
             
-            System.out.println(crearImagen(file));
+            System.out.println("Hola");
             //pasar a imagen
         }
 

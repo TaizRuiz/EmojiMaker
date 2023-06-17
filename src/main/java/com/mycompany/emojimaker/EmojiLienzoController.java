@@ -29,15 +29,20 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import pruebas.Main;
+import static pruebas.Main.cargar;
 
 /**
  * FXML Controller class
@@ -83,113 +88,93 @@ public class EmojiLienzoController implements Initializable {
     private Button btnExportar;
     @FXML
     private AnchorPane contenedorScroll;
-    private DCLList<ImageView> ojos;
-    private DCLList<ImageView> bocas;
-    private DCLList<ImageView> caras;
-    private DCLList<ImageView> cejas;
+    private DCLList<ImageView> ojos=new DCLList<>();
+    private DCLList<ImageView> bocas=new DCLList<>();
+    private DCLList<ImageView> caras=new DCLList<>();
+    private DCLList<ImageView> cejas=new DCLList<>();
+    private DCLList<ImageView> extras=new DCLList<>();
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      ojos=new DCLList<>();
-      bocas=new DCLList<>();
-      caras=new DCLList<>();
-      cejas=new DCLList<>();
-        ImagePathsToTxt("eyes");
-        ImagePathsToTxt("accessories");
-        ImagePathsToTxt("faces");
-        ImagePathsToTxt("mouth");
-        ImagePathsToTxt("eyebrows");
+      
+        System.out.println(this.ojos.size());
         llenarLists();
-        System.out.println(ojos.size());
+        System.out.println(this.ojos.size());
+        System.out.println(this.caras.size());
+        System.out.println(this.bocas.size());
+        System.out.println(this.cejas.size());
+        System.out.println(this.extras.size());
+        
         
         
       
     }
     //metodo que llena los double linkedlist
     public void llenarLists(){
-        try(BufferedReader br=new BufferedReader(new FileReader("src\\main\\java\\imagenes\\eyes.txt")) ){
-            String linea;
-            while ((linea=br.readLine())!=null){
-         
-            Image img=new Image(linea);
-            ImageView iv=new ImageView(img);
-            this.ojos.addLast(iv); 
-            }
+        File directorio = new File("src\\main\\java\\imagenes\\eyes");
+        ArrayList<File> imagenes = cargar(directorio);
+        for(File file: imagenes){
             
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        try(BufferedReader br=new BufferedReader(new FileReader("src\\main\\java\\imagenes\\eyebrows.txt")) ){
-            String linea;
-            while ((linea=br.readLine())!=null){
-         
-            Image img=new Image(linea);
-            ImageView iv=new ImageView(img);
-            this.cejas.addLast(iv); 
+            try {
+                Image i=Main.crearImagen(file);
+                ImageView iv=new ImageView(i);
+                this.ojos.addLast(iv);
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
             }
-            
-        }catch(Exception e){
-            System.out.println(e.getMessage());
         }
-        try(BufferedReader br=new BufferedReader(new FileReader("src\\main\\java\\imagenes\\mouth.txt")) ){
-            String linea;
-            while ((linea=br.readLine())!=null){
-         
-            Image img=new Image(linea);
-            ImageView iv=new ImageView(img);
-            this.bocas.addLast(iv); 
+        File directorioex = new File("src\\main\\java\\imagenes\\accessories");
+        ArrayList<File> imagenesex = cargar(directorio);
+        for(File file: imagenes){
+            
+            try {
+                Image i=Main.crearImagen(file);
+                ImageView iv=new ImageView(i);
+                this.extras.addLast(iv);
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
             }
-            
-        }catch(Exception e){
-            System.out.println(e.getMessage());
         }
-        try(BufferedReader br=new BufferedReader(new FileReader("src\\main\\java\\imagenes\\faces.txt")) ){
-            String linea;
-            while ((linea=br.readLine())!=null){
-         
-            Image img=new Image(linea);
-            ImageView iv=new ImageView(img);
-            this.caras.addLast(iv); 
+        File directoriom = new File("src\\main\\java\\imagenes\\mouth");
+        ArrayList<File> imagenesm = cargar(directorio);
+        for(File file: imagenes){
+            
+            try {
+                Image i=Main.crearImagen(file);
+                ImageView iv=new ImageView(i);
+                this.bocas.addLast(iv);
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
             }
+        }
+        File directoriobrows = new File("src\\main\\java\\imagenes\\eyebrows");
+        ArrayList<File> imagenesbrows = cargar(directorio);
+        for(File file: imagenes){
             
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+            try {
+                Image i=Main.crearImagen(file);
+                ImageView iv=new ImageView(i);
+                this.cejas.addLast(iv);
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
         }
-        System.out.println("se llenaron");
-    }
-    //metodo que escribe archivos de texto con todas las rutas de las imagenes 
-    public void ImagePathsToTxt(String folderName) {
-   
-        String folderPath = "src\\main\\java\\imagenes\\"+folderName; // Specify the path to the folder
-        String outputPath = "src\\main\\java\\imagenes\\"+folderName+".txt"; // Specify the path for the output text file
-
-        try {
-            // Create a Path object representing the folder
-            Path folder = Paths.get(folderPath);
-
-            // Create a BufferedWriter to write to the output text file
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath));
-
-            // Iterate over the files in the folder
-            Files.walk(folder)
-                    .filter(Files::isRegularFile) // Only include regular files, excluding directories
-                    .forEach(file -> {
-                        try {
-                            writer.write(file.toString()); // Write the file path to the text file
-                            writer.newLine(); // Move to the next line
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-
-            writer.close(); // Close the writer
-
-            System.out.println("Image paths written to " + outputPath);
-        } catch (IOException e) {
-            e.printStackTrace();
+        File directoriof = new File("src\\main\\java\\imagenes\\faces");
+        ArrayList<File> imagenesf = cargar(directoriof);
+        for(File file: imagenes){
+            
+            try {
+                Image i=Main.crearImagen(file);
+                ImageView iv=new ImageView(i);
+                this.caras.addLast(iv);
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
         }
-        
-    }  
+
+       
+    
+      } 
     //metodo que convierte el contenedor del emoji en imagen
    public static Image convertAnchorPaneToImage(AnchorPane anchorPane) {
     WritableImage snapshot = anchorPane.snapshot(new SnapshotParameters(), null);
