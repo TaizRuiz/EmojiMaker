@@ -5,6 +5,7 @@
 package pruebas;
 
 import TDASimplement.DCLList;
+import com.mycompany.emojimaker.EmojiLienzoController;
 
 /**
  *
@@ -13,19 +14,10 @@ import TDASimplement.DCLList;
 public class Main {
     public static void main(String[] args) {
         DCLList<String> lista = new DCLList();
-        
-        lista.addLast("primero");
-        lista.addLast("segundo");
-        lista.addLast("tercero");
-        lista.addLast("cuarto");
-        lista.addLast("quinto");
-        
-        System.out.println(lista);
-        
-        
-        lista.remove("tercero");
-        System.out.println(lista);
-        
+        lista.addLast("1");
+        lista.addLast("2");
+        lista.addLast("3");
+        System.out.println(lista.size());
         
         
     }

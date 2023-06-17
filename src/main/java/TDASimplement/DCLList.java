@@ -31,10 +31,13 @@ public class DCLList<E> implements List<E>{
             return true;
         }     
         
-        nodo.setNext(this.last.getNext());
+        nodo.setNext(this.last.getPrevious());
+        this.last.getPrevious().setPrevious(nodo);
         this.last.setNext(nodo);
         nodo.setPrevious(this.last);
-        nodo.getNext().setPrevious(nodo);
+        this.last=nodo;
+        
+   
         this.last = nodo;      
         return true;
     }
