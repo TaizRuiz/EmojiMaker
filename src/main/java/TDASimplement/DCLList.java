@@ -67,10 +67,37 @@ public class DCLList<E> implements List<E>{
 
     @Override
     public E get(int i) {
-
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        E elemento=null;
+        int cont=0;
+        if (i>=0 && i<this.size()){
+            if (i==0){
+                elemento=this.last.getNext().getContent();
+            }
+            else if (i==this.size()-1){
+                elemento=this.last.getContent();
+            }
+            else {
+                NodeDCLL<E> nodoViajero=this.last;
+                
+                for(nodoViajero =nodoViajero.getNext(); !(nodoViajero.equals(last)); nodoViajero = nodoViajero.getNext()){
+                    if (cont==i){
+                        elemento=nodoViajero.getContent();
+                        
+                    }
+                    cont++;
+                    
+                }
+            }
+        }
+        else {
+            throw new IndexOutOfBoundsException("indice fuera de rango");
+        }
+        return elemento;
     }
-
+    
+    public NodeDCLL getNode(){
+        return this.last.getNext();
+    }
     @Override
 
     public boolean isEmpty() {

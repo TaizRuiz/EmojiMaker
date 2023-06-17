@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -56,9 +57,13 @@
                            </padding>
                         </HBox>
                         <ScrollPane fx:id="scrollPaneFeatures" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0">
-                          <content>
-                            <AnchorPane fx:id="contenedorScroll" minHeight="0.0" minWidth="0.0" prefHeight="300.0" prefWidth="450.0" />
-                          </content>
+                           <content>
+                              <FlowPane fx:id="contenedorScroll" hgap="15.0" layoutX="40.0" layoutY="40.0" prefHeight="294.0" prefWidth="426.0" vgap="15.0">
+                                 <padding>
+                                    <Insets left="30.0" right="20.0" top="20.0" />
+                                 </padding>
+                              </FlowPane>
+                           </content>
                         </ScrollPane>
                      </children></VBox>
                </children>

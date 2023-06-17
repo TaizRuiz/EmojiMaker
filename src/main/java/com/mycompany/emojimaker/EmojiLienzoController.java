@@ -6,6 +6,7 @@ package com.mycompany.emojimaker;
 
 import Classes.Emoji;
 import TDASimplement.DCLList;
+import TDASimplement.NodeDCLL;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -38,9 +39,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.FlowPane;
 import pruebas.Main;
 import static pruebas.Main.cargar;
 
@@ -87,27 +93,96 @@ public class EmojiLienzoController implements Initializable {
     @FXML
     private Button btnExportar;
     @FXML
-    private AnchorPane contenedorScroll;
+    private FlowPane contenedorScroll;
     private DCLList<ImageView> ojos=new DCLList<>();
     private DCLList<ImageView> bocas=new DCLList<>();
     private DCLList<ImageView> caras=new DCLList<>();
     private DCLList<ImageView> cejas=new DCLList<>();
     private DCLList<ImageView> extras=new DCLList<>();
-   
+    private NodeDCLL<ImageView> nodoF;
+    private ImageView ivSelected;
+    ObservableList<String> options = FXCollections.observableArrayList(
+                "ojos",
+                "cara",
+                "ceja",
+                "accesorios",
+                "boca"
+            
+        );
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
-        System.out.println(this.ojos.size());
         llenarLists();
-        System.out.println(this.ojos.size());
-        System.out.println(this.caras.size());
-        System.out.println(this.bocas.size());
-        System.out.println(this.cejas.size());
-        System.out.println(this.extras.size());
         
-        
-        
-      
+        this.comboBoxOpciones.setItems(options);
+        comboBoxOpciones.setOnAction(eh->{
+            this.contenedorScroll.getChildren().clear();
+            comboMethod();
+        });
+        this.btnNext.setOnAction(eh->{
+            if (this.comboBoxOpciones.getValue()==null){
+                Alert a=new Alert(Alert.AlertType.ERROR);
+                a.setContentText("debe seleccionar un feature primero");
+                a.showAndWait();
+            }else{
+                Image i=nodoF.getContent().getImage();
+                this.ivSelected.setImage(i);
+                nodoF=nodoF.getNext();
+                
+            }
+        });
+        this.btnPrev.setOnAction(eh->{
+            if (this.comboBoxOpciones.getValue()==null){
+                Alert a=new Alert(Alert.AlertType.ERROR);
+                a.setContentText("debe seleccionar un feature primero");
+                a.showAndWait();
+            }else{
+                nodoF=nodoF.getPrevious();
+                Image i=nodoF.getContent().getImage();
+                this.ivSelected.setImage(i);
+                
+            }
+        });
+    }
+    
+    //metodo del comboBox
+    public void comboMethod(){
+        String seleccionado=comboBoxOpciones.getValue().toString();
+            if (seleccionado.equals("ojos")){
+                cargarFeatures(ojos);
+                this.nodoF=this.ojos.getNode();
+                this.ivSelected=this.emojiEyes;
+            }
+             if (seleccionado.equals("boca")){
+                cargarFeatures(bocas);
+                this.nodoF=this.bocas.getNode();
+                this.ivSelected=this.emojiMouth;
+            }
+              if (seleccionado.equals("cara")){
+                cargarFeatures(caras);
+                this.nodoF=this.caras.getNode();
+                this.ivSelected=this.emojiFace;
+            }
+               if (seleccionado.equals("ceja")){
+                cargarFeatures(cejas);
+                this.nodoF=this.cejas.getNode();
+                this.ivSelected=this.emojiBrows;
+            }
+                if (seleccionado.equals("accesorios")){
+                cargarFeatures(extras);
+                
+            }
+            
+    }
+    
+    //metodo que carga los arrayList en el panel 
+    public void cargarFeatures(DCLList<ImageView> lista){
+        for (int i=0;i<lista.size();i++){
+            ImageView iv=lista.get(i);
+            iv.setFitHeight(60);
+            iv.setFitWidth(60);
+            this.contenedorScroll.getChildren().add(iv);
+        }
     }
     //metodo que llena los double linkedlist
     public void llenarLists(){
@@ -124,8 +199,8 @@ public class EmojiLienzoController implements Initializable {
             }
         }
         File directorioex = new File("src\\main\\java\\imagenes\\accessories");
-        ArrayList<File> imagenesex = cargar(directorio);
-        for(File file: imagenes){
+        ArrayList<File> imagenesex = cargar(directorioex);
+        for(File file: imagenesex){
             
             try {
                 Image i=Main.crearImagen(file);
@@ -136,8 +211,8 @@ public class EmojiLienzoController implements Initializable {
             }
         }
         File directoriom = new File("src\\main\\java\\imagenes\\mouth");
-        ArrayList<File> imagenesm = cargar(directorio);
-        for(File file: imagenes){
+        ArrayList<File> imagenesm = cargar(directoriom);
+        for(File file: imagenesm){
             
             try {
                 Image i=Main.crearImagen(file);
@@ -148,8 +223,8 @@ public class EmojiLienzoController implements Initializable {
             }
         }
         File directoriobrows = new File("src\\main\\java\\imagenes\\eyebrows");
-        ArrayList<File> imagenesbrows = cargar(directorio);
-        for(File file: imagenes){
+        ArrayList<File> imagenesbrows = cargar(directoriobrows);
+        for(File file: imagenesbrows){
             
             try {
                 Image i=Main.crearImagen(file);
@@ -161,7 +236,7 @@ public class EmojiLienzoController implements Initializable {
         }
         File directoriof = new File("src\\main\\java\\imagenes\\faces");
         ArrayList<File> imagenesf = cargar(directoriof);
-        for(File file: imagenes){
+        for(File file: imagenesf){
             
             try {
                 Image i=Main.crearImagen(file);

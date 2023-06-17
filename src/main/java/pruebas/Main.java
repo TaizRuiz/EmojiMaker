@@ -30,7 +30,9 @@ public class Main {
         lista.addLast("5");
         lista.addLast("4");
         System.out.println(lista.size());
-        
+        for (int i=0; i<lista.size();i++){
+            System.out.println(lista.get(i));
+        }
         /*
         PRUEBA DE CARGAR IMAGENES DEL DIRECTORIO 
         */
