@@ -101,6 +101,7 @@ public class EmojiLienzoController implements Initializable {
     private DCLList<ImageView> extras=new DCLList<>();
     private NodeDCLL<ImageView> nodoF;
     private ImageView ivSelected;
+    
     ObservableList<String> options = FXCollections.observableArrayList(
                 "ojos",
                 "cara",
@@ -143,6 +144,7 @@ public class EmojiLienzoController implements Initializable {
                 
             }
         });
+        
     }
     
     //metodo del comboBox
@@ -152,24 +154,29 @@ public class EmojiLienzoController implements Initializable {
                 cargarFeatures(ojos);
                 this.nodoF=this.ojos.getNode();
                 this.ivSelected=this.emojiEyes;
+                
             }
              if (seleccionado.equals("boca")){
                 cargarFeatures(bocas);
                 this.nodoF=this.bocas.getNode();
                 this.ivSelected=this.emojiMouth;
+                
             }
               if (seleccionado.equals("cara")){
                 cargarFeatures(caras);
                 this.nodoF=this.caras.getNode();
                 this.ivSelected=this.emojiFace;
+                
             }
                if (seleccionado.equals("ceja")){
                 cargarFeatures(cejas);
                 this.nodoF=this.cejas.getNode();
                 this.ivSelected=this.emojiBrows;
+                
             }
                 if (seleccionado.equals("accesorios")){
                 cargarFeatures(extras);
+                
                 
             }
             
@@ -181,6 +188,10 @@ public class EmojiLienzoController implements Initializable {
             ImageView iv=lista.get(i);
             iv.setFitHeight(60);
             iv.setFitWidth(60);
+            iv.setOnMouseClicked(eh->{
+                this.ivSelected.setImage(iv.getImage());
+                nodoF=lista.getNodeByContent(iv);
+            });
             this.contenedorScroll.getChildren().add(iv);
         }
     }
