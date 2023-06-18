@@ -41,6 +41,43 @@ public class Main {
             System.out.println(it.next());
         }
     
+        /*
+        PRUEBA DE CARGAR IMAGENES DEL DIRECTORIO 
+        */
+        
+        File directorio = new File("src\\main\\java\\imagenes\\eyes");
+        ArrayList<File> imagenes = cargar(directorio);
+        System.out.println("hol");
+        //esas files pasarla a image
+        
+        for(File file: imagenes){
+            
+            System.out.println("Hola");
+            //pasar a imagen
+        }
+
+    
     }
+    
+    public static ArrayList<File> cargar(File directorio){
+        
+        File[] arregloImagenes = directorio.listFiles();
+        
+        ArrayList<File> imagenes = new ArrayList<>();
+        
+        for(File foto: arregloImagenes){
+            imagenes.add(foto);
+        }
+        
+        return imagenes;
+     }
+    
+    public static Image crearImagen(File img) throws FileNotFoundException{
+
+        Image image = new Image(new FileInputStream(img));  
+        return image;
+    }
+        
+    
 
 }

@@ -4,11 +4,13 @@
  */
 package TDASimplement;
 
+import java.util.Iterator;
+
 /**
  *
  * @author USUARIO
  */
-public class ArrayList<E> implements List<E>{
+public class ArrayList<E> implements List<E>, Iterable<E>{
 
        private E[] elements;
     private int MAX_SIZE = 100;
@@ -176,6 +178,26 @@ public class ArrayList<E> implements List<E>{
        }
             
         }
+
+    @Override
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<>(){
+            int cont = 0;
+            @Override
+            public boolean hasNext() {
+                return cont < effectiveSize;
+            }
+
+            @Override
+            public E next() {
+                E ele = elements[cont];
+                cont ++;
+                return ele;
+            }
+            
+        };
+        return it;
+    }
         
     
 }
