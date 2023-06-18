@@ -4,12 +4,14 @@
  */
 package TDASimplement;
 
+import java.util.Iterator;
+
 /**
  *
  * @author USUARIO
  * @param <E>
  */
-public class DCLList<E> implements List<E>{
+public class DCLList<E> implements List<E>, Iterable<E>{
 
     private NodeDCLL<E> last;
     
@@ -184,6 +186,34 @@ public class DCLList<E> implements List<E>{
         
         cadena += contenido;
         return cadena;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<E>() {
+              
+            NodeDCLL<E> cursor = last.getNext();
+            
+            
+            @Override
+            public boolean hasNext() {
+                return cursor != null;
+            }
+
+            @Override
+            public E next() {
+                E e = cursor.getContent();
+                if(cursor.getNext() == last.getNext()){
+                    cursor = null;
+                }else{
+                    cursor = cursor.getNext();
+                }
+                return e;
+            }
+        };
+        
+        return it;
+        
     }
     
     

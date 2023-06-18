@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.scene.image.Image;
 
 /**
@@ -24,48 +25,22 @@ public class Main {
     
     public static void main(String[] args) throws MalformedURLException, FileNotFoundException {
         DCLList<String> lista = new DCLList();
+        
+        
         lista.addLast("1");
         lista.addLast("2");
         lista.addLast("3");
-        lista.addLast("5");
         lista.addLast("4");
-        System.out.println(lista.size());
-        for (int i=0; i<lista.size();i++){
-            System.out.println(lista.get(i));
-        }
-        /*
-        PRUEBA DE CARGAR IMAGENES DEL DIRECTORIO 
-        */
-        
-        File directorio = new File("src\\main\\java\\imagenes\\eyes");
-        ArrayList<File> imagenes = cargar(directorio);
-        System.out.println("hol");
-        //esas files pasarla a image
-        
-        for(File file: imagenes){
-            
-            System.out.println("Hola");
-            //pasar a imagen
-        }
+        lista.addLast("5");
 
+
+
+        Iterator<String> it = lista.iterator();
+        
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
     
     }
-    public static ArrayList<File> cargar(File directorio){
-        
-        File[] arregloImagenes = directorio.listFiles();
-        
-        ArrayList<File> imagenes = new ArrayList<>();
-        
-        for(File foto: arregloImagenes){
-            imagenes.add(foto);
-        }
-        
-        return imagenes;
-     }
-    
-    public static Image crearImagen(File img) throws FileNotFoundException{
 
-        Image image = new Image(new FileInputStream(img));  
-        return image;
-    }
 }
