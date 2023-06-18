@@ -8,11 +8,8 @@ package TDASimplement;
  *
  * @author USUARIO
  */
-public interface List<E> {
+public interface List<E>{
 
-
-
-  
     public int size();
     public boolean isEmpty();
 
@@ -36,5 +33,5 @@ public interface List<E> {
 
     public String toString(); 
   
-  
+
 }
