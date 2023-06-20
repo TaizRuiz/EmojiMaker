@@ -47,6 +47,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import pruebas.Main;
 import static pruebas.Main.cargar;
 
@@ -93,7 +95,11 @@ public class EmojiLienzoController implements Initializable {
     @FXML
     private Button btnExportar;
     @FXML
+    private Button deleteFeatButton;
+    @FXML
     private FlowPane contenedorScroll;
+     @FXML
+    private Button newFtButton;
     private DCLList<ImageView> ojos=new DCLList<>();
     private DCLList<ImageView> bocas=new DCLList<>();
     private DCLList<ImageView> caras=new DCLList<>();
@@ -101,6 +107,7 @@ public class EmojiLienzoController implements Initializable {
     private DCLList<ImageView> extras=new DCLList<>();
     private NodeDCLL<ImageView> nodoF;
     private ImageView ivSelected;
+    private DCLList<ImageView> selectedList;
     
     ObservableList<String> options = FXCollections.observableArrayList(
                 "ojos",
@@ -144,6 +151,38 @@ public class EmojiLienzoController implements Initializable {
                 
             }
         });
+        this.newFtButton.setOnAction(eh->{
+            if (this.comboBoxOpciones.getValue()==null){
+                Alert a=new Alert(Alert.AlertType.ERROR);
+                a.setContentText("debe seleccionar un feature primero");
+                a.showAndWait();
+            }else{
+               FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Resource File");
+                fileChooser.getExtensionFilters().addAll(
+                         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+                        
+                
+            }
+         
+            
+        });
+        this.deleteFeatButton.setOnAction(eh->{
+            this.ivSelected.setImage(null);
+            NodeDCLL<ImageView> sub=nodoF.getNext();    
+            this.selectedList.remove(this.nodoF.getContent());
+            this.nodoF=sub;
+            this.ivSelected.setImage(this.nodoF.getContent().getImage());
+//            for (int i=0;i<l.size();i++){
+//            ImageView iv=lista.get(i);
+//            iv.setFitHeight(60);
+//            iv.setFitWidth(60);
+//            
+//            
+//            this.contenedorScroll.getChildren().add(iv);
+//        }
+            
+         });
         
     }
     
@@ -154,24 +193,28 @@ public class EmojiLienzoController implements Initializable {
                 cargarFeatures(ojos);
                 this.nodoF=this.ojos.getNode();
                 this.ivSelected=this.emojiEyes;
+                this.selectedList=this.ojos;
                 
             }
              if (seleccionado.equals("boca")){
                 cargarFeatures(bocas);
                 this.nodoF=this.bocas.getNode();
                 this.ivSelected=this.emojiMouth;
+                this.selectedList=this.bocas;
                 
             }
               if (seleccionado.equals("cara")){
                 cargarFeatures(caras);
                 this.nodoF=this.caras.getNode();
                 this.ivSelected=this.emojiFace;
+                this.selectedList=this.caras;
                 
             }
                if (seleccionado.equals("ceja")){
                 cargarFeatures(cejas);
                 this.nodoF=this.cejas.getNode();
                 this.ivSelected=this.emojiBrows;
+                this.selectedList=this.cejas;
                 
             }
                 if (seleccionado.equals("accesorios")){

@@ -51,6 +51,8 @@
                               <Button fx:id="btnPrev" mnemonicParsing="false" prefHeight="42.0" prefWidth="43.0" text="prev" />
                               <Button fx:id="btnNext" mnemonicParsing="false" prefHeight="39.0" prefWidth="40.0" text="next" />
                               <ComboBox fx:id="comboBoxOpciones" prefWidth="150.0" />
+                              <Button fx:id="newFtButton" mnemonicParsing="false" text="Add" />
+                              <Button fx:id="deleteFeatButton" mnemonicParsing="false" text="Delete" />
                            </children>
                            <padding>
                               <Insets left="20.0" />

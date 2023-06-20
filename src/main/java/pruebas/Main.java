@@ -33,7 +33,8 @@ public class Main {
         lista.addLast("4");
         lista.addLast("5");
 
-
+        //Prueba remove index 
+        lista.remove("2");
 
         Iterator<String> it = lista.iterator();
         
