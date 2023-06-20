@@ -59,6 +59,7 @@ public class GalleryWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.contenedorProy=new FlowPane();
         llenarContenedor();
+        
     }    
     
 

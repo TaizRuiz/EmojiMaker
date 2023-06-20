@@ -49,6 +49,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import pruebas.Main;
 import static pruebas.Main.cargar;
 
@@ -124,11 +126,29 @@ public class EmojiLienzoController implements Initializable {
         
         this.comboBoxOpciones.setItems(options);
         comboBoxOpciones.setOnAction(eh->{
-            this.contenedorScroll.getChildren().clear();
-            comboMethod();
+            startComboBox();
         });
         this.btnNext.setOnAction(eh->{
-            if (this.comboBoxOpciones.getValue()==null){
+            runNext();
+        });
+        this.btnPrev.setOnAction(eh->{
+            runPrev();
+        });
+        this.newFtButton.setOnAction(eh->{
+           addFeature();
+        });
+        this.deleteFeatButton.setOnAction(eh->{
+            deleteFeature();});
+        
+    }
+    //meotod que carga panel y setean atributos iniciales 
+    public void startComboBox(){
+         this.contenedorScroll.getChildren().clear();
+            comboMethod();
+    }
+    //metodo boton next
+    public void runNext(){
+        if (this.comboBoxOpciones.getValue()==null){
                 Alert a=new Alert(Alert.AlertType.ERROR);
                 a.setContentText("debe seleccionar un feature primero");
                 a.showAndWait();
@@ -138,9 +158,10 @@ public class EmojiLienzoController implements Initializable {
                 nodoF=nodoF.getNext();
                 
             }
-        });
-        this.btnPrev.setOnAction(eh->{
-            if (this.comboBoxOpciones.getValue()==null){
+    }
+    //metodo boton previous
+    public void runPrev(){
+        if (this.comboBoxOpciones.getValue()==null){
                 Alert a=new Alert(Alert.AlertType.ERROR);
                 a.setContentText("debe seleccionar un feature primero");
                 a.showAndWait();
@@ -150,42 +171,50 @@ public class EmojiLienzoController implements Initializable {
                 this.ivSelected.setImage(i);
                 
             }
-        });
-        this.newFtButton.setOnAction(eh->{
-            if (this.comboBoxOpciones.getValue()==null){
+    }
+    //metodo que añade nueva caracteristica 
+    public void addFeature(){
+         if (this.comboBoxOpciones.getValue()==null){
                 Alert a=new Alert(Alert.AlertType.ERROR);
                 a.setContentText("debe seleccionar un feature primero");
                 a.showAndWait();
             }else{
-               FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Open Resource File");
-                fileChooser.getExtensionFilters().addAll(
-                         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
-                        
+               JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(null);
+                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PNG", "png");
+                fileChooser.setFileFilter(filter);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    
+                    String filePath = "file:"+selectedFile.getAbsolutePath();
+                    System.out.println(filePath);
+                    Image i=new Image(filePath);
+                    ImageView iv=new ImageView(i);
+                    this.selectedList.addLast(iv);
+                    this.contenedorScroll.getChildren().clear();
+                    cargarFeatures(this.selectedList);
+                }
+                         
                 
             }
-         
-            
-        });
-        this.deleteFeatButton.setOnAction(eh->{
-            this.ivSelected.setImage(null);
+    }
+    //metodo que borra la caracteristica seleccionada
+    public void deleteFeature(){
+        if (this.comboBoxOpciones.getValue()==null){
+                Alert a=new Alert(Alert.AlertType.ERROR);
+                a.setContentText("debe seleccionar un feature primero");
+                a.showAndWait();
+            }else{
+        this.ivSelected.setImage(null);
             NodeDCLL<ImageView> sub=nodoF.getNext();    
             this.selectedList.remove(this.nodoF.getContent());
             this.nodoF=sub;
             this.ivSelected.setImage(this.nodoF.getContent().getImage());
-//            for (int i=0;i<l.size();i++){
-//            ImageView iv=lista.get(i);
-//            iv.setFitHeight(60);
-//            iv.setFitWidth(60);
-//            
-//            
-//            this.contenedorScroll.getChildren().add(iv);
-//        }
-            
-         });
-        
+            this.contenedorScroll.getChildren().clear();
+            cargarFeatures(this.selectedList);
     }
-    
+        }
+            
     //metodo del comboBox
     public void comboMethod(){
         String seleccionado=comboBoxOpciones.getValue().toString();
