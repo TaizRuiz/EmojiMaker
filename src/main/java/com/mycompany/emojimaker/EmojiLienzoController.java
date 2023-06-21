@@ -5,6 +5,7 @@
 package com.mycompany.emojimaker;
 
 import Classes.Emoji;
+import TDASimplement.ArrayList;
 import TDASimplement.DCLList;
 import TDASimplement.NodeDCLL;
 import java.io.ByteArrayOutputStream;
@@ -38,7 +39,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -114,11 +114,14 @@ public class EmojiLienzoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         llenarLists();
         
+        //Llena opciones y evento segun seleccione el usuario
         this.comboBoxOpciones.setItems(options);
         comboBoxOpciones.setOnAction(eh->{
             this.contenedorScroll.getChildren().clear();
             comboMethod();
         });
+        
+        //Realiza el cambio segun sea hacia delante o atras
         this.btnNext.setOnAction(eh->{
             if (this.comboBoxOpciones.getValue()==null){
                 Alert a=new Alert(Alert.AlertType.ERROR);
@@ -150,8 +153,8 @@ public class EmojiLienzoController implements Initializable {
         String seleccionado=comboBoxOpciones.getValue().toString();
             if (seleccionado.equals("ojos")){
                 cargarFeatures(ojos);
-                this.nodoF=this.ojos.getNode();
-                this.ivSelected=this.emojiEyes;
+                this.nodoF=this.ojos.getNode(); 
+                this.ivSelected=this.emojiEyes;  //Selecciona el imageview en el cual me posiciono para cambiar
             }
              if (seleccionado.equals("boca")){
                 cargarFeatures(bocas);
@@ -175,7 +178,7 @@ public class EmojiLienzoController implements Initializable {
             
     }
     
-    //metodo que carga los arrayList en el panel 
+    //metodo que carga la lista doble enlazada en el panel 
     public void cargarFeatures(DCLList<ImageView> lista){
         for (int i=0;i<lista.size();i++){
             ImageView iv=lista.get(i);
@@ -185,6 +188,7 @@ public class EmojiLienzoController implements Initializable {
         }
     }
     //metodo que llena los double linkedlist
+    //Se cambio el arraylist al nuestro
     public void llenarLists(){
         File directorio = new File("src\\main\\java\\imagenes\\eyes");
         ArrayList<File> imagenes = cargar(directorio);
@@ -250,7 +254,7 @@ public class EmojiLienzoController implements Initializable {
        
     
       } 
-    //metodo que convierte el contenedor del emoji en imagen
+   //metodo que convierte el contenedor del emoji en imagen
    public static Image convertAnchorPaneToImage(AnchorPane anchorPane) {
     WritableImage snapshot = anchorPane.snapshot(new SnapshotParameters(), null);
     BufferedImage bufferedImage = SwingFXUtils.fromFXImage(snapshot, null);

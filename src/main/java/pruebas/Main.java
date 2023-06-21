@@ -4,6 +4,7 @@
  */
 package pruebas;
 
+import TDASimplement.ArrayList;
 import TDASimplement.DCLList;
 
 import com.mycompany.emojimaker.EmojiLienzoController;
@@ -12,7 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import javafx.scene.image.Image;
 
@@ -58,7 +59,7 @@ public class Main {
 
     
     }
-    
+    //Se ha cambiado el arrayList a el nuestro en el import 
     public static ArrayList<File> cargar(File directorio){
         
         File[] arregloImagenes = directorio.listFiles();
@@ -66,7 +67,7 @@ public class Main {
         ArrayList<File> imagenes = new ArrayList<>();
         
         for(File foto: arregloImagenes){
-            imagenes.add(foto);
+            imagenes.addLast(foto);
         }
         
         return imagenes;
