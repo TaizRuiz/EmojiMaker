@@ -50,9 +50,9 @@ public class WelcomeWindowController {
     public boolean  allowAcces(String usern, String pass){
         boolean valorIngreso=false;  
         Usuario usuarioP=new Usuario(usern, pass);
-        for (int i=0; i<App.usuarios.size();i++){
-            if (App.usuarios.get(i).equals(usuarioP)){
-                App.usuarioSeleccionado=App.usuarios.get(i);
+        for (Usuario u: App.usuarios){
+            if (u.equals(usuarioP)){
+                App.usuarioSeleccionado=u;
                 valorIngreso=true;
             }
         }

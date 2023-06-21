@@ -100,6 +100,22 @@ public class DCLList<E> implements List<E>, Iterable<E>{
     public NodeDCLL getNode(){
         return this.last.getNext();
     }
+    public NodeDCLL getNodeByContent(E content){
+        NodeDCLL nodo=null;
+        NodeDCLL<E> nodoViajero=this.last;
+        if (this.last.getContent().equals(content)){
+            nodo=this.last;
+        }
+        else{
+        for(nodoViajero =nodoViajero.getNext(); !(nodoViajero.equals(last)); nodoViajero = nodoViajero.getNext()){
+                    if (nodoViajero.getContent().equals(content)){
+                       nodo=nodoViajero;
+                        
+                    }
+                    }         
+        }            
+        return nodo;
+    }
     @Override
 
     public boolean isEmpty() {
@@ -134,7 +150,9 @@ public class DCLList<E> implements List<E>, Iterable<E>{
 
     @Override
     public E remove(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      E contenido=null;
+      
+      return contenido;
     }
 
    

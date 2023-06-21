@@ -47,6 +47,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import pruebas.Main;
 import static pruebas.Main.cargar;
 
@@ -93,7 +97,11 @@ public class EmojiLienzoController implements Initializable {
     @FXML
     private Button btnExportar;
     @FXML
+    private Button deleteFeatButton;
+    @FXML
     private FlowPane contenedorScroll;
+     @FXML
+    private Button newFtButton;
     private DCLList<ImageView> ojos=new DCLList<>();
     private DCLList<ImageView> bocas=new DCLList<>();
     private DCLList<ImageView> caras=new DCLList<>();
@@ -101,6 +109,8 @@ public class EmojiLienzoController implements Initializable {
     private DCLList<ImageView> extras=new DCLList<>();
     private NodeDCLL<ImageView> nodoF;
     private ImageView ivSelected;
+    private DCLList<ImageView> selectedList;
+    
     ObservableList<String> options = FXCollections.observableArrayList(
                 "ojos",
                 "cara",
@@ -117,13 +127,31 @@ public class EmojiLienzoController implements Initializable {
         //Llena opciones y evento segun seleccione el usuario
         this.comboBoxOpciones.setItems(options);
         comboBoxOpciones.setOnAction(eh->{
-            this.contenedorScroll.getChildren().clear();
-            comboMethod();
+            startComboBox();
         });
         
         //Realiza el cambio segun sea hacia delante o atras
         this.btnNext.setOnAction(eh->{
-            if (this.comboBoxOpciones.getValue()==null){
+            runNext();
+        });
+        this.btnPrev.setOnAction(eh->{
+            runPrev();
+        });
+        this.newFtButton.setOnAction(eh->{
+           addFeature();
+        });
+        this.deleteFeatButton.setOnAction(eh->{
+            deleteFeature();});
+        
+    }
+    //meotod que carga panel y setean atributos iniciales 
+    public void startComboBox(){
+         this.contenedorScroll.getChildren().clear();
+            comboMethod();
+    }
+    //metodo boton next
+    public void runNext(){
+        if (this.comboBoxOpciones.getValue()==null){
                 Alert a=new Alert(Alert.AlertType.ERROR);
                 a.setContentText("debe seleccionar un feature primero");
                 a.showAndWait();
@@ -133,9 +161,10 @@ public class EmojiLienzoController implements Initializable {
                 nodoF=nodoF.getNext();
                 
             }
-        });
-        this.btnPrev.setOnAction(eh->{
-            if (this.comboBoxOpciones.getValue()==null){
+    }
+    //metodo boton previous
+    public void runPrev(){
+        if (this.comboBoxOpciones.getValue()==null){
                 Alert a=new Alert(Alert.AlertType.ERROR);
                 a.setContentText("debe seleccionar un feature primero");
                 a.showAndWait();
@@ -145,34 +174,83 @@ public class EmojiLienzoController implements Initializable {
                 this.ivSelected.setImage(i);
                 
             }
-        });
     }
-    
+    //metodo que añade nueva caracteristica 
+    public void addFeature(){
+         if (this.comboBoxOpciones.getValue()==null){
+                Alert a=new Alert(Alert.AlertType.ERROR);
+                a.setContentText("debe seleccionar un feature primero");
+                a.showAndWait();
+            }else{
+               JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(null);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PNG", "png");
+                fileChooser.setFileFilter(filter);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    
+                    String filePath = "file:"+selectedFile.getAbsolutePath();
+                    System.out.println(filePath);
+                    Image i=new Image(filePath);
+                    ImageView iv=new ImageView(i);
+                    this.selectedList.addLast(iv);
+                    this.contenedorScroll.getChildren().clear();
+                    cargarFeatures(this.selectedList);
+                }
+                         
+                
+            }
+    }
+    //metodo que borra la caracteristica seleccionada
+    public void deleteFeature(){
+        if (this.comboBoxOpciones.getValue()==null){
+                Alert a=new Alert(Alert.AlertType.ERROR);
+                a.setContentText("debe seleccionar un feature primero");
+                a.showAndWait();
+            }else{
+        this.ivSelected.setImage(null);
+            NodeDCLL<ImageView> sub=nodoF.getNext();    
+            this.selectedList.remove(this.nodoF.getContent());
+            this.nodoF=sub;
+            this.ivSelected.setImage(this.nodoF.getContent().getImage());
+            this.contenedorScroll.getChildren().clear();
+            cargarFeatures(this.selectedList);
+    }
+        }
+            
     //metodo del comboBox
     public void comboMethod(){
         String seleccionado=comboBoxOpciones.getValue().toString();
             if (seleccionado.equals("ojos")){
                 cargarFeatures(ojos);
-                this.nodoF=this.ojos.getNode(); 
-                this.ivSelected=this.emojiEyes;  //Selecciona el imageview en el cual me posiciono para cambiar
+                this.nodoF=this.ojos.getNode();
+                this.ivSelected=this.emojiEyes; //posiciona el imageview de la opcion escogida
+                this.selectedList=this.ojos;
             }
              if (seleccionado.equals("boca")){
                 cargarFeatures(bocas);
                 this.nodoF=this.bocas.getNode();
                 this.ivSelected=this.emojiMouth;
+                this.selectedList=this.bocas;
+                
             }
               if (seleccionado.equals("cara")){
                 cargarFeatures(caras);
                 this.nodoF=this.caras.getNode();
                 this.ivSelected=this.emojiFace;
+                this.selectedList=this.caras;
+                
             }
                if (seleccionado.equals("ceja")){
                 cargarFeatures(cejas);
                 this.nodoF=this.cejas.getNode();
                 this.ivSelected=this.emojiBrows;
+                this.selectedList=this.cejas;
+                
             }
                 if (seleccionado.equals("accesorios")){
                 cargarFeatures(extras);
+                
                 
             }
             
@@ -184,6 +262,10 @@ public class EmojiLienzoController implements Initializable {
             ImageView iv=lista.get(i);
             iv.setFitHeight(60);
             iv.setFitWidth(60);
+            iv.setOnMouseClicked(eh->{
+                this.ivSelected.setImage(iv.getImage());
+                nodoF=lista.getNodeByContent(iv);
+            });
             this.contenedorScroll.getChildren().add(iv);
         }
     }
