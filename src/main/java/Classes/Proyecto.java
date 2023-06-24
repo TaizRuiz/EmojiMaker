@@ -16,5 +16,21 @@ public class Proyecto {
         this.proName = proName;
         this.content = content;
     }
+
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    public Emoji getContent() {
+        return content;
+    }
+
+    public void setContent(Emoji content) {
+        this.content = content;
+    }
     
 }

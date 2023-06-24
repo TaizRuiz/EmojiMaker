@@ -5,6 +5,7 @@
 package com.mycompany.emojimaker;
 
 import Classes.Emoji;
+import Classes.Proyecto;
 import TDASimplement.ArrayList;
 import TDASimplement.DCLList;
 import TDASimplement.NodeDCLL;
@@ -345,12 +346,39 @@ public class EmojiLienzoController implements Initializable {
         ImageIO.write(bufferedImage, "png", outputStream);
         byte[] imageData = outputStream.toByteArray();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
-    return new Image(inputStream);
+        //voy a crear esta imagen y ponerla como proyecto
+        Image portada = new Image(inputStream);
+        //voy a poner cada parte del emoji
+        //falta crear el proyecto y agregarlo
+        return new Image(inputStream);
     } catch (IOException e) {
         e.printStackTrace();
     }
     return null;
 }
+   
+   //metodo que se acciona cuando un proyecto es abierto
+   public void cargarProyecto(Proyecto proy){
+        try {
+            //aqui me pasa el proyecto debo colocar los image view como los tiene
+            //cargamos las caracteristicas del emoji/ o podemos ir viendo en la lista
+            Image ojosIm = Main.crearImagen(new File(proy.getContent().getEyes_url()));
+            Image bocaIm = Main.crearImagen(new File(proy.getContent().getMouth_url()));
+            Image cejasIm = Main.crearImagen(new File(proy.getContent().getBrows_url()));
+            Image caraIm = Main.crearImagen(new File(proy.getContent().getFace_url()));
+            Image accIm = Main.crearImagen(new File(proy.getContent().getAccesory()));
+            
+            //se la agrega al atributo correspondiente de nuestro lienzo
+            emojiEyes.setImage(ojosIm);
+            emojiMouth.setImage(bocaIm);
+            emojiBrows.setImage(cejasIm);
+            emojiFace.setImage(caraIm);
+            //faltaria el accesorio++++=+++++++++
+            
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+   }
 
     public ImageView getEmojiFace() {
         return emojiFace;
