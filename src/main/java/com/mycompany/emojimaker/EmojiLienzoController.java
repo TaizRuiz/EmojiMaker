@@ -47,6 +47,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -144,6 +145,24 @@ public class EmojiLienzoController implements Initializable {
         this.deleteFeatButton.setOnAction(eh->{
             deleteFeature();});
         
+        //guardar proyecto
+        this.btnGuardar.setOnAction(eh->{
+            //Pide el nombre del proyecto
+            //crea un diálogo de entrada de texto
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Proyecto Nuevo");
+            dialog.setHeaderText("Ingresa el nombre de tu proyecto");
+            dialog.setContentText("Proyecto:");
+            dialog.showAndWait().ifPresent(texto -> {
+                //convierte la el emoji en imagen png y devuelve la imagen
+                Image imagen = convertAnchorPaneToImage(emojiBlock,texto);
+                
+                //Primero crear proyecto 
+                Proyecto proy =crearProyecto(texto,imagen);
+                App.usuarioSeleccionado.getProyectos().addLast(proy);
+                System.out.println(App.usuarioSeleccionado.getProyectos());
+            });
+        });
     }
     //meotod que carga panel y setean atributos iniciales 
     public void startComboBox(){
@@ -338,7 +357,7 @@ public class EmojiLienzoController implements Initializable {
     
       } 
    //metodo que convierte el contenedor del emoji en imagen
-   public static Image convertAnchorPaneToImage(AnchorPane anchorPane) {
+   public static Image convertAnchorPaneToImage(AnchorPane anchorPane,String nombreProyecto) {
     WritableImage snapshot = anchorPane.snapshot(new SnapshotParameters(), null);
     BufferedImage bufferedImage = SwingFXUtils.fromFXImage(snapshot, null);
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -346,17 +365,35 @@ public class EmojiLienzoController implements Initializable {
         ImageIO.write(bufferedImage, "png", outputStream);
         byte[] imageData = outputStream.toByteArray();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
-        //voy a crear esta imagen y ponerla como proyecto
-        Image portada = new Image(inputStream);
-        //voy a poner cada parte del emoji
-        //falta crear el proyecto y agregarlo
+        
+        //Directorio donde se guardan las imagenes
+        String resourcePath = "src\\main\\resources\\ImagenesProyectos\\";
+        
+        //Aqui habria que siempre ponerle un nombre unico a cada imagen
+        String imagePath = resourcePath + nombreProyecto + ".png";
+        
+        //lo guardamos en un archivo que pueda ser enviado cuando se escriba la imagen
+        File outputFile = new File(imagePath);
+        //se escribe la imagen
+        ImageIO.write(bufferedImage, "png", outputFile);
         return new Image(inputStream);
     } catch (IOException e) {
         e.printStackTrace();
     }
     return null;
 }
-   
+   public Proyecto crearProyecto(String nombreProyecto, Image portada){
+       //tengo que poner cada uno de los url
+       String ojosUrl = emojiEyes.getImage().getUrl();
+       String bocaUrl = emojiMouth.getImage().getUrl();
+       String cejasUrl = emojiBrows.getImage().getUrl();
+       String caraUrl = emojiFace.getImage().getUrl();
+       String accUrl; //esta para el accesorio
+       Emoji emoji = new Emoji(ojosUrl,bocaUrl,cejasUrl,caraUrl,portada);
+       //Creo el proyecto
+       Proyecto proy = new Proyecto(nombreProyecto,emoji);
+       return proy;
+   }
    //metodo que se acciona cuando un proyecto es abierto
    public void cargarProyecto(Proyecto proy){
         try {
