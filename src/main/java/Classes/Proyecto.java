@@ -24,6 +24,8 @@ public class Proyecto {
     public void setContent(Emoji content) {
         this.content = content;
     }
+
+    
     
     
 }

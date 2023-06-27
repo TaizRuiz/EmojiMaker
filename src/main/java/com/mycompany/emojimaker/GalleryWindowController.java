@@ -54,10 +54,12 @@ public class GalleryWindowController implements Initializable {
     @FXML
     private ScrollPane contenedorEmojis;
     @FXML
-    private FlowPane contenedorProy;
+    private AnchorPane contenedorProyUsuarios;
+    @FXML
+    private FlowPane proyectosPane;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         llenarContenedor();
         
     }    
@@ -86,13 +88,61 @@ public class GalleryWindowController implements Initializable {
 
     public void llenarContenedor(){
        
+
      for (Proyecto p: App.usuarioSeleccionado.getProyectos()){
-         Label l=new Label();
-         l.setText("Hola");
-         this.contenedorProy.getChildren().add(l);
+        
+
+        //deberia recorrer la lista de proyectos del usuario seleccionado y mostrarlos 
+        //Al dar click a proyecto seleccionado deberia abrrse el controller del lienzo y editar ESE proyecto 
+
+            //1 llenar el contenedor(FLOWPANE) con los proyectos que tiene
+            //tenemos un arraylist con proyecto, ahora debemos iterar 
+            for(Proyecto proy: userProyects){
+                
+                //tenemos 1 proyecto y queremos conseguir de ese proyecto la portada que es imagen
+                Image img = proy.getContent().getPortada();
+                
+                //vamos a ir mostrando esa portada
+                ImageView imv = new ImageView(img);
+                imv.setFitHeight(80);
+                imv.setFitHeight(80);
+                
+                //si se le da click debe abrirse la otra pestana con ese proyecto para editar
+                imv.setOnMouseClicked(event -> {
+                    editarProyecto(proy);
+                } );
+                
+                //anade al panel de proyectos cada uno
+                proyectosPane.getChildren().add(imv);
+            }
+            
+        }
      }
+
+    private void editarProyecto(Proyecto proy) {
+        try {
+            //abre la otra ventana para editar
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("EmojiLienzo.fxml"));
+            Parent p= loader.load();
+            EmojiLienzoController controller=loader.getController();
+            //antes de crear la ventana: se cargan los elementos del proyecto 
+            controller.cargarProyecto(proy);
+            Scene s=new Scene(p,700,600);
+            Stage st=new Stage();
+           
+            st.setScene(s);
+            
+            st.showAndWait();
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
-     }
+     
+
+    }
+     
+
 
     
 

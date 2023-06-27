@@ -6,6 +6,10 @@ package com.mycompany.emojimaker;
 
 import Classes.Emoji;
 import Classes.Proyecto;
+import javafx.scene.image.Image;
+
+import TDASimplement.ArrayList;
+
 import TDASimplement.DCLList;
 import TDASimplement.NodeDCLL;
 import java.awt.Rectangle;
@@ -40,7 +44,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -51,7 +54,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+
 import javafx.scene.effect.Effect;
+
+import javafx.scene.control.TextInputDialog;
+
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -131,11 +138,14 @@ public class EmojiLienzoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         llenarLists();
         
-        
+
+        //Llena opciones y evento segun seleccione el usuario
+
         this.comboBoxOpciones.setItems(options);
         comboBoxOpciones.setOnAction(eh->{
             startComboBox();
         });
+
         this.btnGuardar.setOnAction(eh->{
             Image i=convertAnchorPaneToImage(emojiBlock);
            
@@ -154,6 +164,7 @@ public class EmojiLienzoController implements Initializable {
 //        }
             
         });
+
         this.btnNext.setOnAction(eh->{
             runNext();
         });
@@ -166,6 +177,24 @@ public class EmojiLienzoController implements Initializable {
         this.deleteFeatButton.setOnAction(eh->{
             deleteFeature();});
         
+        //guardar proyecto
+        this.btnGuardar.setOnAction(eh->{
+            //Pide el nombre del proyecto
+            //crea un diálogo de entrada de texto
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Proyecto Nuevo");
+            dialog.setHeaderText("Ingresa el nombre de tu proyecto");
+            dialog.setContentText("Proyecto:");
+            dialog.showAndWait().ifPresent(texto -> {
+                //convierte la el emoji en imagen png y devuelve la imagen
+                Image imagen = convertAnchorPaneToImage(emojiBlock);
+                
+                //Primero crear proyecto 
+                Proyecto proy =crearProyecto(imagen);
+                App.usuarioSeleccionado.getProyectos().addLast(proy);
+                System.out.println(App.usuarioSeleccionado.getProyectos());
+            });
+        });
     }
     //meotod que carga panel y setean atributos iniciales 
     public void startComboBox(){
@@ -209,7 +238,7 @@ public class EmojiLienzoController implements Initializable {
             }else{
                JFileChooser fileChooser = new JFileChooser();
                 int result = fileChooser.showOpenDialog(null);
-                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PNG", "png");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos PNG", "png");
                 fileChooser.setFileFilter(filter);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
@@ -249,10 +278,12 @@ public class EmojiLienzoController implements Initializable {
             if (seleccionado.equals("ojos")){
                 cargarFeatures(ojos);
                 this.nodoF=this.ojos.getNode();
-                
+  
                 this.ivSelected=this.emojiEyes;
+
+                this.ivSelected=this.emojiEyes; //posiciona el imageview de la opcion escogida
+
                 this.selectedList=this.ojos;
-                
             }
              if (seleccionado.equals("boca")){
                 cargarFeatures(bocas);
@@ -283,7 +314,7 @@ public class EmojiLienzoController implements Initializable {
             
     }
     
-    //metodo que carga los arrayList en el panel 
+    //metodo que carga la lista doble enlazada en el panel 
     public void cargarFeatures(DCLList<ImageView> lista){
         for (int i=0;i<lista.size();i++){
               
@@ -301,6 +332,7 @@ public class EmojiLienzoController implements Initializable {
         }
     }
     //metodo que llena los double linkedlist
+    //Se cambio el arraylist al nuestro
     public void llenarLists(){
         File directorio = new File("src\\main\\java\\imagenes\\eyes");
         ArrayList<File> imagenes = cargar(directorio);
@@ -366,7 +398,7 @@ public class EmojiLienzoController implements Initializable {
        
     
       } 
-    //metodo que convierte el contenedor del emoji en imagen
+   //metodo que convierte el contenedor del emoji en imagen
    public static Image convertAnchorPaneToImage(AnchorPane anchorPane) {
     WritableImage snapshot = anchorPane.snapshot(new SnapshotParameters(), null);
     BufferedImage bufferedImage = SwingFXUtils.fromFXImage(snapshot, null);
@@ -375,12 +407,54 @@ public class EmojiLienzoController implements Initializable {
         ImageIO.write(bufferedImage, "png", outputStream);
         byte[] imageData = outputStream.toByteArray();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
-    return new Image(inputStream);
+        
+        //Directorio donde se guardan las imagenes
+        String resourcePath = "src\\main\\resources\\ImagenesProyectos\\";
+        
+        //Aqui habria que siempre ponerle un nombre unico a cada imagen
+        String imagePath = resourcePath + ".png";
+        
+        //lo guardamos en un archivo que pueda ser enviado cuando se escriba la imagen
+        File outputFile = new File(imagePath);
+        //se escribe la imagen
+        ImageIO.write(bufferedImage, "png", outputFile);
+        return new Image(inputStream);
     } catch (IOException e) {
         e.printStackTrace();
     }
     return null;
 }
+   public Proyecto crearProyecto( Image portada){
+       //tengo que poner cada uno de los url
+       
+      
+       Emoji emoji = new Emoji(emojiEyes,emojiMouth,emojiBrows,emojiFace,portada);
+       //Creo el proyecto
+       Proyecto proy = new Proyecto(emoji);
+       return proy;
+   }
+   //metodo que se acciona cuando un proyecto es abierto
+   public void cargarProyecto(Proyecto proy){
+        try {
+            //aqui me pasa el proyecto debo colocar los image view como los tiene
+            //cargamos las caracteristicas del emoji/ o podemos ir viendo en la lista
+            Image ojosIm = Main.crearImagen(new File(proy.getContent().getEyes_url().getImage().getUrl()));
+            Image bocaIm = Main.crearImagen(new File(proy.getContent().getMouth_url().getImage().getUrl()));
+            Image cejasIm = Main.crearImagen(new File(proy.getContent().getBrows_url().getImage().getUrl()));
+            Image caraIm = Main.crearImagen(new File(proy.getContent().getFace_url().getImage().getUrl()));
+            Image accIm = Main.crearImagen(new File(proy.getContent().getAccesory().getImage().getUrl()));
+            
+            //se la agrega al atributo correspondiente de nuestro lienzo
+            emojiEyes.setImage(ojosIm);
+            emojiMouth.setImage(bocaIm);
+            emojiBrows.setImage(cejasIm);
+            emojiFace.setImage(caraIm);
+            //faltaria el accesorio++++=+++++++++
+            
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+   }
 
     public ImageView getEmojiFace() {
         return emojiFace;
