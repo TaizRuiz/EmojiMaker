@@ -9,12 +9,21 @@ package Classes;
  * @author USUARIO
  */
 public class Proyecto {
-    String proName;
+    
     Emoji content;
 
-    public Proyecto(String proName, Emoji content) {
-        this.proName = proName;
+    public Proyecto( Emoji content) {
+        
         this.content = content;
     }
+
+    public Emoji getContent() {
+        return content;
+    }
+
+    public void setContent(Emoji content) {
+        this.content = content;
+    }
+    
     
 }

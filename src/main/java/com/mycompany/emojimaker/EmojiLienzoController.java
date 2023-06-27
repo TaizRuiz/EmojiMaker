@@ -5,8 +5,10 @@
 package com.mycompany.emojimaker;
 
 import Classes.Emoji;
+import Classes.Proyecto;
 import TDASimplement.DCLList;
 import TDASimplement.NodeDCLL;
+import java.awt.Rectangle;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -43,12 +45,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.Effect;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import pruebas.Main;
@@ -124,9 +131,28 @@ public class EmojiLienzoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         llenarLists();
         
+        
         this.comboBoxOpciones.setItems(options);
         comboBoxOpciones.setOnAction(eh->{
             startComboBox();
+        });
+        this.btnGuardar.setOnAction(eh->{
+            Image i=convertAnchorPaneToImage(emojiBlock);
+           
+            Emoji e=new Emoji(this.emojiEyes,this.emojiMouth, this.emojiBrows, this.emojiFace, i);
+            Proyecto proyecto=new Proyecto(e);
+            App.usuarioSeleccionado.getProyectos().addLast(proyecto);
+            System.out.println("Emoji Agregado");
+//             try {
+//            FXMLLoader loader=new FXMLLoader(getClass().getResource("galleryWindow.fxml"));
+//            Parent p= loader.load();
+//            GalleryWindowController controller=loader.getController();
+//            controller.llenarContenedor();
+//        
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+            
         });
         this.btnNext.setOnAction(eh->{
             runNext();
@@ -154,8 +180,10 @@ public class EmojiLienzoController implements Initializable {
                 a.showAndWait();
             }else{
                 Image i=nodoF.getContent().getImage();
+                
                 this.ivSelected.setImage(i);
                 nodoF=nodoF.getNext();
+                
                 
             }
     }
@@ -221,6 +249,7 @@ public class EmojiLienzoController implements Initializable {
             if (seleccionado.equals("ojos")){
                 cargarFeatures(ojos);
                 this.nodoF=this.ojos.getNode();
+                
                 this.ivSelected=this.emojiEyes;
                 this.selectedList=this.ojos;
                 
@@ -257,12 +286,16 @@ public class EmojiLienzoController implements Initializable {
     //metodo que carga los arrayList en el panel 
     public void cargarFeatures(DCLList<ImageView> lista){
         for (int i=0;i<lista.size();i++){
+              
             ImageView iv=lista.get(i);
             iv.setFitHeight(60);
             iv.setFitWidth(60);
+            
             iv.setOnMouseClicked(eh->{
+               
                 this.ivSelected.setImage(iv.getImage());
                 nodoF=lista.getNodeByContent(iv);
+                
             });
             this.contenedorScroll.getChildren().add(iv);
         }

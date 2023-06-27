@@ -57,7 +57,7 @@ public class GalleryWindowController implements Initializable {
     private FlowPane contenedorProy;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.contenedorProy=new FlowPane();
+        
         llenarContenedor();
         
     }    
@@ -86,12 +86,13 @@ public class GalleryWindowController implements Initializable {
 
     public void llenarContenedor(){
        
-        //deberia recorrer la lista de proyectos del usuario seleccionado y mostrarlos 
-        //Al dar click a proyecto seleccionado deberia abrrse el controller del lienzo y editar ESE proyecto 
-
-        }
-     
+     for (Proyecto p: App.usuarioSeleccionado.getProyectos()){
+         Label l=new Label();
+         l.setText("Hola");
+         this.contenedorProy.getChildren().add(l);
+     }
     }
+     }
 
     
 
